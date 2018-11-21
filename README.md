@@ -81,4 +81,6 @@ helm upgrade blog --install -f helm/ghost/values.yaml stable/ghost --namespace d
 ## Prometheus
 
 ```bash
+helm dep build ./helm/prometheus-operator
+helm upgrade --install monitor -f helm/prometheus-operator/values-override.yaml --namespace mon ./helm/prometheus-operator --timeout=900
 ```
