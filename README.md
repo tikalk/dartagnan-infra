@@ -32,6 +32,7 @@ helm install -f helm/nginx/values.yaml stable/nginx-ingress --name ingress --nam
 ## Drone CI
 
 ```bash
+helm install -f helm/drone/values.yaml stable/drone --name drone --namespace ci
 kubectl create secret generic drone-server-secrets \
       --namespace=ci \
       --from-literal=DRONE_GITHUB_SECRET="******************************"
