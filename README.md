@@ -31,6 +31,7 @@ helm init --service-account tiller
 
 ```bash
 helm install --name cert-manager --namespace kube-system stable/cert-manager
+kubectl apply -f clusterissuer.yaml
 ```
 
 ## Registry
