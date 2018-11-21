@@ -63,9 +63,13 @@ helm upgrade ingress --install -f helm/nginx/values.yaml stable/nginx-ingress --
 ```bash
 kubectl create secret generic drone-server-secrets \
       --namespace=ci \
-      --from-literal=DRONE_GITHUB_SECRET="******************************"
+      --from-literal=DRONE_GITHUB_SECRET="******************************" \
+      --from-literal=DOCKER_USERNAME="deploy" \
+      --from-literal=DOCKER_PASSWORD="tikal"
 
-helm upgrade drone --install -f helm/drone/values.yaml stable/drone --namespace ci --set server.env.DRONE_GITHUB_CLIENT="********************"
+helm upgrade drone --install -f helm/drone/values.yaml stable/drone \
+  --namespace ci \
+  --set server.env.DRONE_GITHUB_CLIENT="********************"
 ```
 
 ## Ghost
