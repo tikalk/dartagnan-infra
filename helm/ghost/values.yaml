@@ -11,10 +11,6 @@ image:
   registry: docker.io
   repository: bitnami/ghost
   tag: 2.6.0
-  ## Specify a imagePullPolicy
-  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-  ##
   pullPolicy: Always
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -37,7 +33,8 @@ image:
 ## Ghost host and path to create application URLs
 ## ref: https://github.com/bitnami/bitnami-docker-ghost#configuration
 ##
-# ghostHost:
+ghostHost: blog.dartagnan.devops.fuse.tikal.io
+
 ghostPath: /
 
 

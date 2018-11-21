@@ -1,6 +1,16 @@
-# Tikal Fuse-day: Dartagnan-infra
+# Tikal Fuse-day: d'Artagnan Infrastructure
 
-> Infra repo for fuse Dartagnan group
+> Infrastructure as code repository for fuse-day, d'Artagnan team!
+
+## Team
+
+Name | Description
+-----|-------------
+Hila | 
+Liya | 
+Aya  | 
+Ivan | 
+Rafi | 
 
 ## Workstation Setup
 
@@ -20,13 +30,13 @@ helm init --service-account tiller
 ## Metrics Server
 
 ```bash
-helm install -f helm/metrics-server/values.yaml stable/metrics-server --name metrics --namespace kube-system
+helm upgrade metrics --install -f helm/metrics-server/values.yaml stable/metrics-server --namespace kube-system
 ```
 
 ## Nginx Ingress
 
 ```bash
-helm install -f helm/nginx/values.yaml stable/nginx-ingress --name ingress --namespace ingress
+helm upgrade ingress --install -f helm/nginx/values.yaml stable/nginx-ingress --namespace ingress
 ```
 
 ## Drone CI
@@ -50,6 +60,7 @@ kubectl create secret generic drone-server-secrets \
 ## Ghost
 
 ```bash
+helm upgrade blog --install -f helm/ghost/values.yaml stable/ghost --namespace default
 ```
 
 ## Prometheus
