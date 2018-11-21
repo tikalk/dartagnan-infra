@@ -6,11 +6,11 @@
 
 Name | Description
 -----|-------------
-Hila | 
-Liya | 
-Aya  | 
-Ivan | 
-Rafi | 
+Hila |
+Liya |
+Aya  |
+Ivan |
+Rafi |
 
 ## Workstation Setup
 
@@ -74,9 +74,9 @@ helm upgrade drone --install -f helm/drone/values.yaml stable/drone \
 ```
 
 ## Ghost
-
+FRom Ghost project
 ```bash
-helm upgrade blog --install -f helm/ghost/values.yaml stable/ghost --namespace default
+helm upgrade blog --install helm --namespace default --set image.tag=2.6.1.16
 ```
 
 ## Prometheus
