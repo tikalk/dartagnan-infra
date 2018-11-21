@@ -13,7 +13,8 @@ brew upgrade kubernetes-cli kubernetes-helm kubectx stern
 
 ```bash
 helm repo update
-helm init
+kubectl apply -f rbac-config.yaml
+helm init --service-account tiller
 ```
 
 ## Metrics Server

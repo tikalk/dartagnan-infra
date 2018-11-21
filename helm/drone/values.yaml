@@ -12,18 +12,13 @@ images:
   type: LoadBalancer
 
 ingress:
-  enabled: false
+  enabled: true
 
-  ## Drone Ingress annotations
-  ##
-  # annotations:
-  #   kubernetes.io/ingress.class: nginx
-  #   kubernetes.io/tls-acme: 'true'
+  annotations:
+    kubernetes.io/ingress.class: nginx
 
-  ## Drone hostnames must be provided if Ingress is enabled
-  ##
-  # hosts:
-  #   - drone.domain.io
+  hosts:
+    - ci.dartagnan.devops.fuse.tikal.io
 
   ## Drone Ingress TLS configuration secrets
   ## Must be manually created in the namespace
@@ -67,7 +62,6 @@ server:
 
 
 agent:
-  
   env:
     DRONE_DEBUG: "false"
 
