@@ -27,6 +27,25 @@ kubectl apply -f rbac-config.yaml
 helm init --service-account tiller
 ```
 
+## Cert-manager
+
+```bash
+helm install --name cert-manager --namespace kube-system stable/cert-manager
+```
+
+## Registry
+
+```bash
+docker run --entrypoint htpasswd registry:2.6.2 -Bbn deploy "tikal" > htpasswd
+kubectl create secret generic registry-auth-secret --from-file=htpasswd=htpasswd --namespace=kube-system
+kubectl apply -f manifests/registry.yaml
+
+kubectl create secret docker-registry regcred \
+   --docker-server=docker.dartagnan.devops.fuse.tikal.io \
+   --docker-username=deploy \
+   --docker-password=tikal
+```
+
 ## Metrics Server
 
 ```bash

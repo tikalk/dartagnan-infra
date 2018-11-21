@@ -1,0 +1,123 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kube-registry-v0
+  namespace: kube-system
+  labels:
+    k8s-app: kube-registry
+    version: v0
+    kubernetes.io/cluster-service: "true"
+spec:
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-registry
+        version: v0
+        kubernetes.io/cluster-service: "true"
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: ip-172-20-119-20.eu-west-1.compute.internal
+      containers:
+      - name: registry
+        image: registry:2
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: REGISTRY_HTTP_ADDR
+          value: :5000
+        - name: REGISTRY_HTTP_SECRET
+          value: 325h345jhass1401
+        - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+          value: /var/lib/registry
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: basic_realm
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+        volumeMounts:
+        - name: image-store
+          mountPath: /var/lib/registry
+        - name: auth-dir
+          mountPath: /auth
+        ports:
+        - containerPort: 5000
+          name: registry
+          protocol: TCP
+      volumes:
+      - name: image-store
+        hostPath:
+          path: /srv/data/registry
+          type: DirectoryOrCreate
+      - name: auth-dir
+        secret:
+          secretName: registry-auth-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    app: registry
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    k8s-app: kube-registry
+    version: v0
+
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: registry-crt
+  namespace: kube-system
+spec:
+  secretName: registry-crt
+  dnsNames:
+  - docker.dartagnan.devops.fuse.tikal.io
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - docker.dartagnan.devops.fuse.tikal.io
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1000"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1000"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      add_header Strict-Transport-Security "max-age=31536000";
+      add_header X-Content-Type-Options "nosniff";
+      chunked_transfer_encoding on;
+spec:
+  tls:
+  - hosts:
+    - docker.dartagnan.devops.fuse.tikal.io
+    secretName: registry-crt
+  rules:
+  - host: docker.dartagnan.devops.fuse.tikal.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kube-registry
+          servicePort: 5000

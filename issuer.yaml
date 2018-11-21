@@ -1,0 +1,29 @@
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+  namespace: ingress
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: justrafi@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    # Enable HTTP01 validations
+    http01: {}
+
+# ---
+# apiVersion: certmanager.k8s.io/v1alpha1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-staging
+# spec:
+#   acme:
+#     server: https://acme-staging.api.letsencrypt.org/directory
+#     email: justrafi@gmail.com
+#     privateKeySecretRef:
+#       name: letsencrypt-staging
+#     # Enable the HTTP-01 challenge provider
+#     http01: {}
