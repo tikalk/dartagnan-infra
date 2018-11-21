@@ -42,6 +42,8 @@ server:
   envSecrets:
     drone-server-secrets:
       - DRONE_GITHUB_SECRET
+      - DOCKER_USERNAME
+      - DOCKER_PASSWORD
 
 agent:
   env:
