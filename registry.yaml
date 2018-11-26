@@ -18,7 +18,7 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       nodeSelector:
-        kubernetes.io/hostname: ip-172-20-119-20.eu-west-1.compute.internal
+        kubernetes.io/hostname: ip-172-20-48-60.eu-west-1.compute.internal
       containers:
       - name: registry
         image: registry:2
