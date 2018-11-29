@@ -1,0 +1,20 @@
+---
+
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: drone-crt
+  namespace: ci
+spec:
+  secretName: drone-crt
+  dnsNames:
+  - ci.dartagnan.devops.fuse.tikal.io
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - ci.dartagnan.devops.fuse.tikal.io
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
